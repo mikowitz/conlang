@@ -8,5 +8,4 @@
 
 (deftest basic-word-generator-test
   (testing
-    (is (some #(= (generate-word ["cvc"] {:c ["b"] :v ["a"]}) %)
-              	  (map #(apply str (take % (repeat "bab"))) (range 1 5))))))
+    (is (= ["bab"] (distinct (re-seq #"\w{3}" (generate-word ["cvc"] {:c ["b"] :v ["a"]})))))))
