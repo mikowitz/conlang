@@ -12,8 +12,11 @@
               (fn [m] (to-regex-array (phonemes(keyword m)))))
               pattern)
             #"([^_]+)" "($1)")
-          to (generate-target-regex from)]
-    (apply str (replace-blank-with from old) "**" (replace-blank-with to new)))))
+      to (generate-target-regex from)]
+    (if (re-find #"[A-Z]" old)
+	  (let [[old-set new-set] (map #(phonemes (keyword (re-find #"[A-Z]" %))) [old new])]
+        (map #(parse-rule (str % "/" (nth (or new-set (repeat new)) (.indexOf old-set %)) "/" pattern)) old-set))
+      (apply str (replace-blank-with from old) "**" (replace-blank-with to new))))))
 
 (defn apply-rule
   ([in] in)
