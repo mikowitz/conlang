@@ -23,3 +23,7 @@
 (deftest simple-apply-rule-test
   (testing
     (is (= "leitor" (apply-rule "lector" "c/i/e_t" )))))
+
+(deftest more-complex-apply-rule-test
+  (testing
+    (is (= "edado" (apply-rule "etato" "S/Z/V_V" {:S ["t"] :Z ["d"] :V ["a" "e" "o"]})))))

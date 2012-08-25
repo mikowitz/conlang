@@ -14,13 +14,28 @@
             #"([^_]+)" "($1)")
       to (generate-target-regex from)]
     (if (re-find #"[A-Z]" old)
-	  (let [[old-set new-set] (map #(phonemes (keyword (re-find #"[A-Z]" %))) [old new])]
-        (map #(parse-rule (str % "/" (nth (or new-set (repeat new)) (.indexOf old-set %)) "/" pattern)) old-set))
+      (let [[old-set new-set]
+            (map #(phonemes (keyword (re-find #"[A-Z]" %))) [old new])]
+        (map
+         #(parse-rule
+          (str % "/" (nth (or new-set (repeat new)) (.indexOf old-set %)) "/" pattern)
+           phonemes) old-set))
+
       (apply str (replace-blank-with from old) "**" (replace-blank-with to new))))))
+
+(defn process-rule [in rule]
+  (let [[from to] (clojure.string/split rule #"\*\*")]
+  	(loop [ret in]
+      (if (nil? (re-find (re-pattern from) ret))
+        ret
+        (recur (clojure.string/replace ret (re-pattern from) to))))))
 
 (defn apply-rule
   ([in] in)
   ([in rule] (apply-rule in rule {}))
   ([in rule phonemes]
-    (let [[from to] (clojure.string/split (parse-rule rule phonemes) #"\*\*")]
-      (clojure.string/replace in (re-pattern from) to))))
+    (let [rules (flatten (vector (parse-rule rule phonemes)))]
+      (loop [ret in rs rules]
+        (if (empty? rs)
+         ret
+          (recur (process-rule ret (first rs)) (rest rs)))))))
