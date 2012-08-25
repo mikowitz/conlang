@@ -39,3 +39,12 @@
         (if (empty? rs)
          ret
           (recur (process-rule ret (first rs)) (rest rs)))))))
+
+(defn apply-rules
+  ([in] in)
+  ([in rules] (apply-rules in rules {}))
+  ([in rules phonemes]
+    (loop [ret in rs rules]
+      (if (empty? rs)
+        ret
+        (recur (apply-rule ret (first rs) phonemes) (rest rs))))))

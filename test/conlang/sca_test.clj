@@ -27,3 +27,12 @@
 (deftest more-complex-apply-rule-test
   (testing
     (is (= "edado" (apply-rule "etato" "S/Z/V_V" {:S ["t"] :Z ["d"] :V ["a" "e" "o"]})))))
+
+(deftest apply-rules-test
+  (testing
+    (is (= ["doutor" "fogo" "cidade"]
+           (map #(apply-rules %
+              ["[sm]//_$" "v//V_V" "u/o/_$" "S/Z/V_V" "c/i/F_t" "c/u/B_t" "ii/i/_"]
+               {:V ["a" "e" "i" "o" "u"]
+               :S ["p" "t" "c"] :Z ["b" "d" "g"]
+               :F ["i" "e"] :B ["o" "u"]}) ["doctor" "focus" "civitatem"])))))
