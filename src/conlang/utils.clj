@@ -11,3 +11,6 @@
 
 (defn replace-blank-with [in replacement]
   (clojure.string/replace in #"_" replacement))
+
+(defn split-into-chars [in]
+  (rest (clojure.string/split in #"")))

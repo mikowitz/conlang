@@ -1,7 +1,9 @@
-(ns conlang.generator)
+(ns conlang.generator
+  (:use conlang.utils))
+
 
 (defn generate-syllable [syls phonemes]
-  (let [syl (rest (clojure.string/split (rand-nth syls) #""))]
+  (let [syl (split-into-chars (rand-nth syls))]
     (apply str (map #(rand-nth ((keyword %) phonemes)) syl))
 ))
 
