@@ -4,8 +4,8 @@
 
 (deftest basic-syllable-generator-test
   (testing 
-    (is (= "bab" (generate-syllable ["cvc"] {:c ["b"] :v ["a"]})))))
+    (is (= "bab" (generate-syllable ["CVC"] {:C ["b"] :V ["a"]})))))
 
 (deftest basic-word-generator-test
   (testing
-    (is (= ["bab"] (distinct (re-seq #"\w{3}" (generate-word ["cvc"] {:c ["b"] :v ["a"]})))))))
+    (is (= ["bab"] (distinct (re-seq #"\w{3}" (generate-word ["CVC"] {:C ["b"] :V ["a"]})))))))
