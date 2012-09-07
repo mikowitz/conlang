@@ -47,7 +47,9 @@ and "t" : "lector" => "leitor"
 
 Rules can also contain references to phoneme sets:
 
-Given ```
+Given
+
+```
   (def V ["a" "e" "i" "o" "u"])
   (def S ["p" "t" "k"])
   (def Z ["b" "d" "g"])
