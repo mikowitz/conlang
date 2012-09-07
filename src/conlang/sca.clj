@@ -5,17 +5,11 @@
   ([rule] (parse-rule rule {}))
   ([rule phonemes]
 	(let [[old new pattern] (clojure.string/split rule #"/")
-      from (
-        clojure.string/replace
-          (if (re-find #"[A-Z]" pattern)
-            (clojure.string/replace pattern #"[A-Z]"
-              (fn [m] (to-regex-array (phonemes(keyword m)))))
-              pattern)
-            #"([^_]+)" "($1)")
+      from (generate-source-regex pattern phonemes)
       to (generate-target-regex from)]
-    (if (re-find #"[A-Z]" old)
+    (if (match-phoneme-sets old)
       (let [[old-set new-set]
-            (map #(phonemes (keyword (re-find #"[A-Z]" %))) [old new])]
+            (map #(phonemes (keyword (match-phoneme-sets %))) [old new])]
         (map
          #(parse-rule
           (str % "/" (nth (or new-set (repeat new)) (.indexOf old-set %)) "/" pattern)
